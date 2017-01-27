@@ -46,7 +46,7 @@ public class SudokuSolve extends Sudoku {
 							if (checkGuessSquare(getArray(), setRow(row), setColumn(col), number)
 									&& rowCheck(row, number) && columnCheck(col, number)) {
 
-								System.out.println(number + " is valid for " + row + " " + col);
+								
 
 								// If this is the only possible guess for this
 								// square (by checking the rest of the row) the
@@ -59,7 +59,7 @@ public class SudokuSolve extends Sudoku {
 
 									getArray()[row][col] = number;
 
-									System.out.println(this);
+								
 
 									break;
 								}
@@ -68,9 +68,7 @@ public class SudokuSolve extends Sudoku {
 
 									getArray()[row][col] = number;
 
-									System.out.println(this);
-
-									break;
+									break;									break;
 								}
 
 							}
