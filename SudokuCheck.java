@@ -321,15 +321,5 @@ public class SudokuCheck {
 
 
 
-public static void main(String[] args) throws IllegalArgumentException, IOException {
-	
-	Sudoku s1 = SudokuRead.readSudoku("sudoku-part.txt");
-	
-	System.out.println(s1);
-	
-	System.out.println(Arrays.deepToString(SudokuCheck.check(s1.getArray())));
 
-
-
-}
 }
