@@ -447,17 +447,5 @@ public class SudokuInteractive extends Sudoku {
 		return complete;
 	}
 
-	public static void main(String[] args) {
-
-
-		play("sudoku-gametest1.txt");
-
-
-			
-
-
-	}
-
-
 
 }
