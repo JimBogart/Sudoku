@@ -1,0 +1,5 @@
+This is a collection of Java files that allow users to play a Simple Sudoku Game. 
+
+There is also a SudokuSolve program that will return fully solved Sudokus from "easy" Sudoku puzzles. The sudoku solve does not use
+a back tracking algorithm, it simple generates possible guesses, and checks to see if they are the only possible values for the row or column.
+The program will not solve Sudoku puzzles that require trial and error!
