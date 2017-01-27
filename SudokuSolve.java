@@ -1,5 +1,5 @@
 import java.io.IOException;
-
+import java.util.Arrays;
 
 public class SudokuSolve extends Sudoku {
 
@@ -9,10 +9,10 @@ public class SudokuSolve extends Sudoku {
 		super(array);
 
 	}
-	
+
 	/**
-	 * Method SolveMe() will go through and suggest possible values 
-	 * for each sudoku un
+	 * Method SolveMe() will go through and suggest possible values for each
+	 * sudoku
 	 */
 
 	public void SolveMe() {
@@ -23,7 +23,7 @@ public class SudokuSolve extends Sudoku {
 		int number;
 		int count = 0;
 
-		while (count < 10) {
+		while (this.isFilled() == false && count < 100) {
 			// For loop to go through the sudoku puzzle
 			for (row = 0; row < 9; row++) {
 
@@ -43,60 +43,37 @@ public class SudokuSolve extends Sudoku {
 							// "true". It serves to essentially
 							// check which values are allowed for each subsquare
 
-							if (checkGuessSquare(getArray(), setRow(row), setRow(col), number) && rowCheck(row, number)
-									&& columnCheck(col, number)) {
+							if (checkGuessSquare(getArray(), setRow(row), setColumn(col), number)
+									&& rowCheck(row, number) && columnCheck(col, number)) {
 
-								// We then look at possibilities here. This is
+								System.out.println(number + " is valid for " + row + " " + col);
 
-								// I have then put in some code that should
-								// check, where there is a blank square in that
-								// column, whether or not we can eliminate the
-								// guess. This works by looking
-								// at the blanks and working across. If the
-								// guess is already present in that row, then it
-								// means that the guess is valid.
-								// If the number is NOT in the row where there
-								// is a blank, then this means we cannot say for
-								// sure if the guess is 100% right
+								// If this is the only possible guess for this
+								// square (by checking the rest of the row) the
+								// guess goes in
 
-								// I would need to add further methods that
-								// eliminate more possibilities, but I could not
-								// get that far - so this is my best attempt at
-								// the problem. The method
-								// and logic are sound, I just couldnt implement
-								// it at the moment
+								// If the method is the only possible guess (by
+								// checking the column) the guess goes in
 
-								if (checkIfValidForColumn(col, number)) {
+								if (checkOnlyGuessColumn(number, col)) {
 
-									System.out.println(number + " this guess is going in at col " + col );
-									System.out.println(checkIfValidForColumn(col, number) + " " + col);
 									getArray()[row][col] = number;
-									
-									Sudoku s1 = new Sudoku(getArray());
-									
-									System.out.println(s1);
+
+									System.out.println(this);
 
 									break;
-
 								}
-								
-//								else if(checkIfValidForRow(row, number)){
-//									
-//									System.out.println(checkIfValidForRow(row, number) + " " + row);
-//									
-//									System.out.println(number + " this guess is going in at  row " + row);
-//									
-//									getArray()[row][col] = number;
-//
-//									break;
-//									
-//									
-//								}
 
-						
+								if (checkOnlyGuessRow(number, row)) {
+
+									getArray()[row][col] = number;
+
+									System.out.println(this);
+
+									break;
+								}
 
 							}
-
 						}
 
 					}
@@ -104,123 +81,69 @@ public class SudokuSolve extends Sudoku {
 				}
 
 			}
-
 			count++;
 		}
 
 	}
 	
-	
-	
-	public boolean checkIfValidForRow(int row, int number){
+	public boolean checkOnlyGuessRow(int number, int row){
 		
-		int counterblanks =0;
-		int counter = 0;
+		int count=0;
 		
-		for(int col=0;col<9;col++){
+		for(int i=0;i<9;i++){
 			
-			
-			if(getArray()[row][col] == 0){
+			if(getArray()[row][i]==0){
 				
-				counterblanks++;
-				
-				for(int j=0;j<9;j++){
-					
-					
-					if(getArray()[j][col]==number){
-						
-						counter++;
-					}
+				if(checkGuessSquare(getArray(), setRow(row), setColumn(i), number)
+				   && rowCheck(row, number)	
+				   && columnCheck(i, number))
+				{
+					count++;
 				}
-
+				
 			}
-			
-
 		}
 		
-		if (counterblanks != counter+1){
+		if(count==1){
+			return true;
+		}
+		
+		else {
 			
 			return false;
 		}
 		
-		return true;
 	}
 	
-
-	public boolean checkIfValidForColumn(int column, int number){
+	public boolean checkOnlyGuessColumn(int number, int col){
 		
-		int counterblanks =0;
-		int counter = 0;
+		int count=0;
 		
-		for(int row=0;row<9;row++){
+		for(int i=0;i<9;i++){
 			
-			
-			if(getArray()[row][column] == 0){
+			if(getArray()[i][col]==0){
 				
-				counterblanks++;
-				
-				for(int j=0;j<9;j++){
-					
-					
-					if(getArray()[row][j]==number){
-						
-						counter++;
-					}
+				if(checkGuessSquare(getArray(), setRow(i), setColumn(col), number)
+				   && rowCheck(i, number)	
+				   && columnCheck(col, number))
+				{
+					count++;
 				}
-
+				
 			}
-
-
-
 		}
 		
+		if(count==1){
+			return true;
+		}
 		
-		if (counterblanks != counter+1){
+		else {
 			
 			return false;
 		}
 		
-		return true;
 	}
 	
-	
-
-	public boolean isOnlyPossibilityLeft(int col, int row, int number) {
-
-		for (int row1 = 0; row1 <= 8; row1++) {
-
-			if (number == getArray()[row1][col]) {
-
-				return false;
-			}
-
-		}
-
-		for (int col1 = 0; col1 <= 8; col1++) {
-
-			if (number == getArray()[row][col1]) {
-
-				return false;
-			}
-
-		}
-
-		for (int i = setRow(row); i < setRow(row) + 3; i++) {
-
-			for (int j = setColumn(col); j < setColumn(col) + 3; j++) {
-
-				if (number == getArray()[i][j]) {
-
-					return false;
-				}
-
-			}
-
-		}
-
-		return true;
-
-	}
 
 	public boolean checkGuessSquare(int[][] array, int startRow, int startCol, int number) {
 
@@ -330,13 +253,6 @@ public class SudokuSolve extends Sudoku {
 
 	public static void main(String[] args) throws IOException {
 
-		SudokuSolve SOLVE = new SudokuSolve(makeNewArray("sudoku-ex1.txt"));
-
-		System.out.println(SOLVE);
-
-		SOLVE.SolveMe();
-		
-		System.out.println(SOLVE);
 
 	}
 }
